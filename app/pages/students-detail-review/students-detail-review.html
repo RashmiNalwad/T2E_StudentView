@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>
-      Student x review
+      Student {{student+1}} Review
     </ion-title>
     <ion-buttons start>
       <button (click)="dismiss()">
@@ -13,5 +13,18 @@
 </ion-header>
 
 <ion-content>
-  Heyy there :)
+    <iframe [src]="url"  frameborder="0" height="50%" width="100%" allowfullscreen></iframe>
+    <ion-item>
+      <ion-label stacked>{{questions[0]}}</ion-label>
+      <ion-textarea [disabled]="reviewed" [(ngModel)]="ans1">{{ans1}}</ion-textarea>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>{{questions[1]}}</ion-label>
+      <ion-textarea [disabled]="reviewed" [(ngModel)]="ans2">{{ans2}}</ion-textarea>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>{{questions[2]}}</ion-label>
+      <ion-textarea [disabled]="reviewed" [(ngModel)]="ans3">{{ans3}}</ion-textarea>
+    </ion-item>
+    <button *ngIf="!reviewed" style="left: 40%;" small  (click)="submitReview()">Submit</button>
 </ion-content>

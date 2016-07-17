@@ -5,6 +5,7 @@ import {Component} from '@angular/core';
 import {Modal, Platform, NavController, NavParams, ViewController} from 'ionic-angular';
 import {StudentCompletedPage} from '../student-completed/student-completed';
 import {StudentReviewPage} from '../student-review/student-review';
+import { SafeResourceUrl, DomSanitizationService } from '@angular/platform-browser';
 
 @Component({
   templateUrl: 'build/pages/student-upload/student-upload.html',
@@ -19,7 +20,10 @@ export class StudentUploadPage {
   classSelected:string;
   student_grade:string;
   email:string;
-  constructor(public nav: NavController, navParams: NavParams, private dataService: Data, private lib: Lib){
+  assignment_url:string;
+  url: SafeResourceUrl;
+
+  constructor(public nav: NavController, navParams: NavParams, private dataService: Data, private lib: Lib,private sanitizer: DomSanitizationService){
     this.chapterSelected = navParams.data.chapter;
     this.student_grade = navParams.data.studentGrade;
     this.classSelected = navParams.data.class;
@@ -58,9 +62,10 @@ export class StudentUploadPage {
                   this.assignment_dict[assign] ["teacher_yet_to_review"] = assignmentDetail_info["teacher_yet_to_review"];
                   this.assignment_dict[assign] ["no_of_assignments_reviewed"] = assignmentDetail_info["teacher_reviewed"].length;
                   this.assignment_dict[assign] ["no_of_assignments_to_review"] = assignmentDetail_info["teacher_yet_to_review"].length;
-
                   this.assignment_dict[assign] ["peer_review_map"] = assignmentDetail_info["peer_review_map"];
                   this.assignment_dict[assign] ["responses"] = assignmentDetail_info["responses"];
+                  this.assignment_url = this.assignment_dict[assign] ["responses"][this.email]["attachmentUrl"];
+                  this.url = this.sanitizer.bypassSecurityTrustResourceUrl(this.assignment_url);//WARNING: calling this method with untrusted user data exposes your application to XSS security risks!
                   console.log(this.assignment_dict);
                   console.log(this.assignment_dict[assign] ["responses"]);
               }

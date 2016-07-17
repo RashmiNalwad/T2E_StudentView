@@ -57,6 +57,7 @@
    <ion-item *ngSwitchCase="'resubmit'">
      <ion-card *ngFor="let assignment of chapter_assignments">
          <ion-card-header>{{assignment}}</ion-card-header>
+         <iframe [src]="url" frameborder="0" height="100%" width="100%" allowfullscreen></iframe>
          <ion-card-content>
             <a>
              <button primary small (click)="doAlert(assignment)">

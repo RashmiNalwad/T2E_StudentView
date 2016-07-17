@@ -1,7 +1,9 @@
 import {Component, Input} from '@angular/core';
-import {NavController, IONIC_DIRECTIVES,Alert} from 'ionic-angular';
+import {Modal, NavController, IONIC_DIRECTIVES} from 'ionic-angular';
 import {Data} from '../../providers/data/data';
 import {Lib} from '../../providers/lib/lib';
+import { SafeResourceUrl, DomSanitizationService } from '@angular/platform-browser';
+import {DetailRatingsModalPage} from '../detail-ratings-modal/detail-ratings-modal';
 
 @Component({
     templateUrl: 'build/pages/student-completed/student-completed.html',
@@ -10,51 +12,37 @@ import {Lib} from '../../providers/lib/lib';
 })
 export class StudentCompletedPage {
     @Input() assignment: string;
-    @Input() response: {};
     @Input() email: string;
-    @Input() studentGrade:string;
-    @Input() classSelected:string;
-    @Input() chapterSelected:string;
 
-    assignment_dict = {};
-    chapter_assignments = [];
-    assignment_url:string;
-    cumulative_rating;
-    constructor(private nav:NavController,private dataService:Data, private lib: Lib) {
+    url: SafeResourceUrl;
+    myresponse: any;
+    assignment_url: string;
+    cumulative_rating: number;
+    teacherFeedback: string;
+    teacherRating: number;
+    constructor(private nav: NavController, private dataService: Data, private lib: Lib, private sanitizer: DomSanitizationService) {
 
     }
 
-    ngOnInit(){
-      this.dataService.getAssignments(this.studentGrade+"_"+this.classSelected, this.chapterSelected).then((assignmentsInfo) => {
-        if (assignmentsInfo) {
-          this.chapter_assignments = assignmentsInfo["assignments"];
-              this.assignment_dict[this.assignment] = {};
-              this.assignment_dict[this.assignment]["teacher_reviewed"] = [];
-              this.assignment_dict[this.assignment]["responses"] = {};
-
-            this.dataService.getAssignmentInfo(this.assignment).then((assignmentDetail_info) => {
-                if (assignmentDetail_info) {
-                    this.assignment_dict[this.assignment] = {};
-                    this.assignment_dict[this.assignment] ["teacher_reviewed"] = assignmentDetail_info["teacher_reviewed"];
-                    this.assignment_dict[this.assignment] ["responses"] = assignmentDetail_info["responses"];
-                    console.log(this.assignment_dict);
-                    this.assignment_url = this.assignment_dict[this.assignment] ["responses"][this.email]["attachmentUrl"];
-                    this.cumulative_rating = this.assignment_dict[this.assignment] ["responses"][this.email]["cumulative_rating"];
-                    console.log(this.assignment_dict[this.assignment] ["responses"][this.email]["cumulative_rating"]);
-                }
-            }).catch(function(exception){
-              console.log(exception);
-            });
-        }
-      });
+    ngOnInit() {
+        this.dataService.getAssignmentInfo(this.assignment).then((assignmentDetail_info) => {
+            if (assignmentDetail_info) {
+                this.myresponse = assignmentDetail_info["responses"][this.email];
+                console.log(this.myresponse);
+                this.assignment_url = this.myresponse["attachmentUrl"];
+                this.url = this.sanitizer.bypassSecurityTrustResourceUrl(this.assignment_url);//WARNING: calling this method with untrusted user data exposes your application to XSS security risks!
+                this.cumulative_rating = this.myresponse["cumulative_rating"];
+                this.teacherFeedback = this.myresponse["teacher_feedback"]["Comment"];
+                this.teacherRating = this.myresponse["teacher_feedback"]["Rating on Scale of 5"];
+            }
+        }).catch(function(exception) {
+            console.log(exception);
+        });
     }
 
-    doAlert() {
-        let alert = Alert.create({
-        title: 'My Rating',
-        subTitle: this.assignment_url,
-        buttons: ['OK']
-      });
-      this.nav.present(alert);
-  }
+    viewRatings() {
+      let modal = Modal.create(DetailRatingsModalPage,
+        {"myresponse" : this.myresponse});
+      this.nav.present(modal);
+    }
 }

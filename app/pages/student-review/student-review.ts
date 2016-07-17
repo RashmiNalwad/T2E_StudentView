@@ -4,12 +4,12 @@ import {Lib} from '../../providers/lib/lib';
 import {Modal, Platform, NavController, NavParams, ViewController,IONIC_DIRECTIVES,Alert} from 'ionic-angular';
 import {StudentDetailReviewPage} from '../students-detail-review/students-detail-review';
 
-
 @Component({
     templateUrl: 'build/pages/student-review/student-review.html',
     selector: 'student-review',
     directives: [IONIC_DIRECTIVES]
 })
+
 export class StudentReviewPage {
     @Input() assignment: string;
     @Input() response: {};
@@ -23,12 +23,25 @@ export class StudentReviewPage {
     assignment_url:string;
     cumulative_rating;
     students_to_review = [];
-    student:string;
+    student = 0 ;
+    questions = [];
+    review_by:string;
+    s1_status:boolean; //status to decide whether to put create icon or done-all icon.
+    s2_status:boolean;
+    s3_status:boolean;
 
     constructor(public nav: NavController,public platform: Platform,public params: NavParams,public viewCtrl: ViewController,private dataService: Data) {
     }
 
     ngOnInit(){
+      this.dataService.getQuestions().then((questions_info) => {
+         if(questions_info){
+              this.questions =  questions_info["questions"];
+         }
+      }).catch(function(exception){
+        console.log(exception);
+      });
+
       this.dataService.getAssignments(this.studentGrade+"_"+this.classSelected, this.chapterSelected).then((assignmentsInfo) => {
         if (assignmentsInfo) {
           this.chapter_assignments = assignmentsInfo["assignments"];
@@ -42,12 +55,35 @@ export class StudentReviewPage {
                     this.assignment_dict[this.assignment] = {};
                     this.assignment_dict[this.assignment] ["peer_review_map"] = assignmentDetail_info["peer_review_map"];
                     this.assignment_dict[this.assignment] ["responses"] = assignmentDetail_info["responses"];
-                    console.log(this.assignment_dict);
                     this.assignment_url = this.assignment_dict[this.assignment] ["responses"][this.email]["attachmentUrl"];
                     this.cumulative_rating = this.assignment_dict[this.assignment] ["responses"][this.email]["cumulative_rating"];
-                    this.students_to_review = this.assignment_dict[this.assignment]["peer_review_mapp"][this.email]["to_review"];
-                    console.log(this.assignment_dict[this.assignment]["peer_review_mapp"][this.email]["to_review"]);
-                    console.log(this.assignment_dict[this.assignment] ["responses"][this.email]["cumulative_rating"]);
+                    this.students_to_review = this.assignment_dict[this.assignment]["peer_review_map"][this.email]["to_review"];
+                    this.assignment_dict[this.assignment] ["review_by"] =  assignmentDetail_info["review_by"];
+                    this.review_by = this.assignment_dict[this.assignment]["review_by"];
+                    if(this.email in this.assignment_dict[this.assignment] ["responses"][this.students_to_review[0]]["peers_feedback"])
+                    {
+                       this.s1_status = true;
+                    }
+                    else
+                    {
+                      this.s1_status = false;
+                    }
+                    if(this.email in this.assignment_dict[this.assignment] ["responses"][this.students_to_review[1]]["peers_feedback"])
+                    {
+                       this.s2_status = true;
+                    }
+                    else
+                    {
+                      this.s2_status = false;
+                    }
+                    if(this.email in this.assignment_dict[this.assignment] ["responses"][this.students_to_review[2]]["peers_feedback"])
+                    {
+                       this.s3_status = true;
+                    }
+                    else
+                    {
+                      this.s3_status = false;
+                    }
                 }
             }).catch(function(exception){
               console.log(exception);
@@ -57,7 +93,7 @@ export class StudentReviewPage {
     }
 
     openModal(studentNum) {
-        let modal = Modal.create(StudentDetailReviewPage, studentNum);
+        let modal = Modal.create(StudentDetailReviewPage, { selectedStudent:studentNum,assignment:this.assignment,reviewer:this.email,questions:this.questions});
         this.nav.present(modal);
     }
 }
