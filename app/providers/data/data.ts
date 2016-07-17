@@ -12,8 +12,9 @@ export class Data {
     remote: any;
     data;
     constructor() {
-        this.db = new PouchDB('http://127.0.0.1:5984/teach2educate');
+        // this.db = new PouchDB('http://127.0.0.1:5984/teach2educate');
         // this.db = new PouchDB('https://rashmi2212:Teach2Educate@rashmi2212.cloudant.com/t2e');
+        this.db = new PouchDB('https://teach2educate:educate2teach@teach2educate.cloudant.com/t2edb');
 
         /*this.db = new PouchDB('teach2educate_pouch');
         this.username = 'admin';
@@ -157,35 +158,35 @@ export class Data {
     });
   }
 
-  getQuestions(){
-    return new Promise(resolve => {
-      this.db.get("review_questions").then(function(doc){
-          console.log(doc);
-          resolve(doc);
-      }).catch(function(err){
-          console.log(err);
-      })
-    });
-  }
+getQuestions(){
+ return new Promise(resolve => {
+   this.db.get("review_questions").then(function(doc){
+       console.log(doc);
+       resolve(doc);
+   }).catch(function(err){
+       console.log(err);
+   })
+ });
+}
 
-  submitPeerFeedback(assignment,reviewer,student_id,q1,ans1,q2,ans2,q3,ans3){
-    var dbaccess = this;
-    return new Promise(resolve => {
-        this.db.get("assignment_" + assignment).then(function(assignmentDoc){
-        console.log(assignmentDoc);
-        let q_ans_map = {};
-        q_ans_map[q1]=ans1;
-        q_ans_map[q2]=ans2;
-        q_ans_map[q3]=ans3;
-        assignmentDoc["responses"][student_id]["peers_feedback"][reviewer] = q_ans_map;
-        console.log(assignmentDoc);
-        resolve(dbaccess.db.put(assignmentDoc));
-      }).catch(function (err) {
-        console.log(err);
-        resolve(err);
-      });
-    });
-  }
+submitPeerFeedback(assignment,reviewer,student_id,q1,ans1,q2,ans2,q3,ans3){
+ var dbaccess = this;
+ return new Promise(resolve => {
+     this.db.get("assignment_" + assignment).then(function(assignmentDoc){
+     console.log(assignmentDoc);
+     let q_ans_map = {};
+     q_ans_map[q1]=ans1;
+     q_ans_map[q2]=ans2;
+     q_ans_map[q3]=ans3;
+     assignmentDoc["responses"][student_id]["peers_feedback"][reviewer] = q_ans_map;
+     console.log(assignmentDoc);
+     resolve(dbaccess.db.put(assignmentDoc));
+   }).catch(function (err) {
+     console.log(err);
+     resolve(err);
+   });
+ });
+}
 
   submitReview(assignment, student_id, teacher_reviewed, teacher_feedback){
     var dbaccess = this;

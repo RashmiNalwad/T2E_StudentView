@@ -26,28 +26,57 @@
 
  <div [ngSwitch]="assignments">
    <ion-item *ngSwitchCase="'upload'">
-     <ion-card *ngFor="let assignment of chapter_assignments">
+     <ion-card *ngFor="let assignment of soft_deadline_expired_assignments" style="background: lightgrey">
          <ion-card-header>{{assignment}}</ion-card-header>
          <ion-card-content>
-            <a>
-             <button primary small (click)="doAlert(assignment)">
-               <ion-icon name="document"></ion-icon>
-               <div>View Description</div>
-             </button>
-            </a>
             <ion-row>
-             <ion-col>
-                <button primary clear small>
-                  <ion-icon name="videocam"></ion-icon>
-                  <div>Upload</div>
+              <ion-col width-25>
+                <button outline small (click)="doAlert(assignment)">
+                  <ion-icon name="eye"></ion-icon>Description
                 </button>
               </ion-col>
-              <ion-col>
-                <button primary dark clear small>
-                  <ion-icon name="calendar"></ion-icon>
-                  <div>Due: </div>
-                  {{assignment_dict[assignment]['soft_deadline_due']}}
+              &nbsp;&nbsp;&nbsp;&nbsp;
+             <ion-col width-25>
+                <button outline small>
+                  <ion-icon name="videocam"></ion-icon>Upload
                 </button>
+              </ion-col>
+              <ion-col width-50>
+                <button outline small danger>
+                  <ion-icon name="warning"></ion-icon>
+                  Soft Deadline Passed:
+                  {{assignment_dict[assignment]['formatted_soft_deadline_due']}}
+                </button>
+                  <!-- <ion-datetime disabled displayFormat="DD/MM/YYYY HH:mm"
+                  [(ngModel)]="assignment_dict[assignment]['soft_deadline_due']"></ion-datetime> -->
+              </ion-col>
+            </ion-row>
+         </ion-card-content>
+     </ion-card>
+     
+     <ion-card *ngFor="let assignment of safe_submit_assignments">
+         <ion-card-header>{{assignment}}</ion-card-header>
+         <ion-card-content>
+            <ion-row>
+              <ion-col width-25>
+                <button outline small (click)="doAlert(assignment)">
+                  <ion-icon name="eye"></ion-icon>Description
+                </button>
+              </ion-col>
+              &nbsp;&nbsp;&nbsp;&nbsp;
+             <ion-col width-25>
+                <button outline small>
+                  <ion-icon name="videocam"></ion-icon>Upload
+                </button>
+              </ion-col>
+              <ion-col width-50>
+                <button outline small>
+                  <ion-icon name="calendar"></ion-icon>
+                  Soft Deadline :
+                  {{assignment_dict[assignment]['formatted_soft_deadline_due']}}
+                </button>
+                  <!-- <ion-datetime disabled displayFormat="DD/MM/YYYY HH:mm"
+                  [(ngModel)]="assignment_dict[assignment]['soft_deadline_due']"></ion-datetime> -->
               </ion-col>
             </ion-row>
          </ion-card-content>
@@ -55,29 +84,29 @@
    </ion-item>
 
    <ion-item *ngSwitchCase="'resubmit'">
-     <ion-card *ngFor="let assignment of chapter_assignments">
+     <ion-card *ngFor="let assignment of canResubmit_assignments">
          <ion-card-header>{{assignment}}</ion-card-header>
-         <iframe [src]="url" frameborder="0" height="100%" width="100%" allowfullscreen></iframe>
          <ion-card-content>
-            <a>
-             <button primary small (click)="doAlert(assignment)">
-               <ion-icon name="document"></ion-icon>
-               <div>View Description</div>
-             </button>
-            </a>
+            <iframe [src]="sanitizer.bypassSecurityTrustResourceUrl(assignment_dict[assignment]['responses'][email]['attachmentUrl'])" frameborder="0" height="100%" width="100%" allowfullscreen></iframe>
             <ion-row>
-             <ion-col>
-                <button primary clear small>
-                  <ion-icon name="videocam"></ion-icon>
-                  <div>Resubmit</div>
+              <ion-col width-25>
+                <button outline small (click)="doAlert(assignment)">
+                  <ion-icon name="eye"></ion-icon>Description
                 </button>
               </ion-col>
-              <ion-col>
-                <button primary danger clear small>
+              &nbsp;&nbsp;&nbsp;
+              <ion-col width-25>
+                 <button outline small>
+                   <ion-icon name="videocam"></ion-icon>Re-Submit
+                 </button>
+               </ion-col>
+              <ion-col width-50>
+                <button outline small danger>
                   <ion-icon name="calendar"></ion-icon>
-                  <div>Due: </div>
-                  {{assignment_dict[assignment]['hard_deadline_due']}}
+                  Hard Deadline :
+                  {{assignment_dict[assignment]['formatted_hard_deadline_due']}}
                 </button>
+                  <!--<ion-datetime disabled displayFormat="DD/MM HH:mm" [(ngModel)]="assignment_dict[assignment]['hard_deadline_due']"></ion-datetime>-->
               </ion-col>
             </ion-row>
          </ion-card-content>
@@ -87,20 +116,14 @@
    <ion-item *ngSwitchCase="'reviewrate'">
      <student-review *ngFor="let assignment of chapter_assignments"
                          [assignment]="assignment"
-                         [studentGrade]="student_grade"
-                         [classSelected] = "classSelected"
-                         [email]="email"
-                         [chapterSelected]="chapterSelected">
+                         [email]="email">
      </student-review>
    </ion-item>
 
    <ion-item *ngSwitchCase="'completed'">
-     <student-completed *ngFor="let assignment of chapter_assignments"
+     <student-completed *ngFor="let assignment of completed_assignments"
                          [assignment]="assignment"
-                         [studentGrade]="student_grade"
-                         [classSelected] = "classSelected"
-                         [email]="email"
-                         [chapterSelected]="chapterSelected">
+                         [email]="email">
      </student-completed>
    </ion-item>
 </div>

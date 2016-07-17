@@ -34,6 +34,12 @@ export class StudentReviewPage {
     }
 
     ngOnInit(){
+
+      this.assignment_dict[this.assignment] = {};
+      this.assignment_dict[this.assignment]["responses"] = {};
+      this.assignment_dict[this.assignment]["peer_review_map"] = {};
+      this.students_to_review = [];
+
       this.dataService.getQuestions().then((questions_info) => {
          if(questions_info){
               this.questions =  questions_info["questions"];
@@ -42,24 +48,24 @@ export class StudentReviewPage {
         console.log(exception);
       });
 
-      this.dataService.getAssignments(this.studentGrade+"_"+this.classSelected, this.chapterSelected).then((assignmentsInfo) => {
-        if (assignmentsInfo) {
-          this.chapter_assignments = assignmentsInfo["assignments"];
-              this.assignment_dict[this.assignment] = {};
-              this.assignment_dict[this.assignment]["responses"] = {};
-              this.assignment_dict[this.assignment]["peer_review_map"] = {};
-              this.students_to_review = [];
-
             this.dataService.getAssignmentInfo(this.assignment).then((assignmentDetail_info) => {
                 if (assignmentDetail_info) {
                     this.assignment_dict[this.assignment] = {};
                     this.assignment_dict[this.assignment] ["peer_review_map"] = assignmentDetail_info["peer_review_map"];
+                    console.log(this.assignment_dict[this.assignment] ["peer_review_map"]);
                     this.assignment_dict[this.assignment] ["responses"] = assignmentDetail_info["responses"];
+                    console.log(this.assignment_dict[this.assignment] ["responses"] );
+                    console.log(this.assignment);
+                    console.log(this.email);
+                    console.log( this.assignment_dict[this.assignment] ["responses"][this.email]);
                     this.assignment_url = this.assignment_dict[this.assignment] ["responses"][this.email]["attachmentUrl"];
                     this.cumulative_rating = this.assignment_dict[this.assignment] ["responses"][this.email]["cumulative_rating"];
                     this.students_to_review = this.assignment_dict[this.assignment]["peer_review_map"][this.email]["to_review"];
                     this.assignment_dict[this.assignment] ["review_by"] =  assignmentDetail_info["review_by"];
                     this.review_by = this.assignment_dict[this.assignment]["review_by"];
+                    console.log(this.assignment_dict[this.assignment] ["responses"][this.students_to_review[0]]["peers_feedback"]);
+                    console.log(this.assignment_dict[this.assignment] ["responses"][this.students_to_review[1]]["peers_feedback"]);
+                    console.log(this.assignment_dict[this.assignment] ["responses"][this.students_to_review[2]]["peers_feedback"]);
                     if(this.email in this.assignment_dict[this.assignment] ["responses"][this.students_to_review[0]]["peers_feedback"])
                     {
                        this.s1_status = true;
@@ -88,8 +94,6 @@ export class StudentReviewPage {
             }).catch(function(exception){
               console.log(exception);
             });
-        }
-      });
     }
 
     openModal(studentNum) {

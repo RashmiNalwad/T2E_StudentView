@@ -48,9 +48,13 @@ export class StudentDetailReviewPage {
                     {
                        this.reviewed = true;
                        this.ans_map = this.assignment_dict[this.assignment]["responses"][this.students_to_review[this.student]]["peers_feedback"][this.reviewer];
+                       console.log(this.ans_map);
                        this.ans1 = this.ans_map[this.questions[0]];
+                       console.log(this.ans1);
                        this.ans2 = this.ans_map[this.questions[1]];
+                       console.log(this.ans2);
                        this.ans3 = this.ans_map[this.questions[2]];
+                       console.log(this.ans2);
                     }
                     else
                     {
@@ -70,6 +74,7 @@ export class StudentDetailReviewPage {
                 if(response["ok"] == true){
                   let toastmsg = obj.lib.showToastMsgWithCloseButton("Succesfully Submitted Review");
                   obj.nav.present(toastmsg);
+                  dismiss();
                 }else{
                   let toastmsg = obj.lib.showToastMsgWithCloseButton("Unable to submit review, Try Again");
                   obj.nav.present(toastmsg);
