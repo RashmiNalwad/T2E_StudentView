@@ -34,7 +34,7 @@ export class StudentReviewPage {
     }
 
     ngOnInit(){
-
+      var dateOptions = { weekday: 'short', year: '2-digit', month: '2-digit', day: '2-digit' };
       this.assignment_dict[this.assignment] = {};
       this.assignment_dict[this.assignment]["responses"] = {};
       this.assignment_dict[this.assignment]["peer_review_map"] = {};
@@ -52,20 +52,12 @@ export class StudentReviewPage {
                 if (assignmentDetail_info) {
                     this.assignment_dict[this.assignment] = {};
                     this.assignment_dict[this.assignment] ["peer_review_map"] = assignmentDetail_info["peer_review_map"];
-                    console.log(this.assignment_dict[this.assignment] ["peer_review_map"]);
                     this.assignment_dict[this.assignment] ["responses"] = assignmentDetail_info["responses"];
-                    console.log(this.assignment_dict[this.assignment] ["responses"] );
-                    console.log(this.assignment);
-                    console.log(this.email);
-                    console.log( this.assignment_dict[this.assignment] ["responses"][this.email]);
                     this.assignment_url = this.assignment_dict[this.assignment] ["responses"][this.email]["attachmentUrl"];
                     this.cumulative_rating = this.assignment_dict[this.assignment] ["responses"][this.email]["cumulative_rating"];
                     this.students_to_review = this.assignment_dict[this.assignment]["peer_review_map"][this.email]["to_review"];
                     this.assignment_dict[this.assignment] ["review_by"] =  assignmentDetail_info["review_by"];
-                    this.review_by = this.assignment_dict[this.assignment]["review_by"];
-                    console.log(this.assignment_dict[this.assignment] ["responses"][this.students_to_review[0]]["peers_feedback"]);
-                    console.log(this.assignment_dict[this.assignment] ["responses"][this.students_to_review[1]]["peers_feedback"]);
-                    console.log(this.assignment_dict[this.assignment] ["responses"][this.students_to_review[2]]["peers_feedback"]);
+                    this.review_by = new Date(this.assignment_dict[this.assignment]["review_by"]).toLocaleDateString('en-US', dateOptions);
                     if(this.email in this.assignment_dict[this.assignment] ["responses"][this.students_to_review[0]]["peers_feedback"])
                     {
                        this.s1_status = true;

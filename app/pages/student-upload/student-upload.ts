@@ -6,6 +6,7 @@ import {Modal, Platform, NavController, NavParams, ViewController} from 'ionic-a
 import {StudentCompletedPage} from '../student-completed/student-completed';
 import {StudentReviewPage} from '../student-review/student-review';
 import { SafeResourceUrl, DomSanitizationService } from '@angular/platform-browser';
+import {AssignDescriptionModalPage} from '../assign-description-modal/assign-description-modal';
 
 @Component({
     templateUrl: 'build/pages/student-upload/student-upload.html',
@@ -27,6 +28,10 @@ export class StudentUploadPage {
     yetToUpload_assignments = [];
     soft_deadline_expired_assignments = [];
     safe_submit_assignments = [];
+
+    assign_description: string;
+    max_response_time = 0;
+    assigned_on: string;
     constructor(public nav: NavController, navParams: NavParams,
         private dataService: Data, private lib: Lib, private sanitizer: DomSanitizationService) {
         this.chapterSelected = navParams.data.chapter;
@@ -101,6 +106,9 @@ export class StudentUploadPage {
                                 }
 
                             }
+                            this.assign_description = this.assignment_dict[assign]["description"];
+                            this.max_response_time = this.assignment_dict[assign]["max_response_duration_min"];
+                            this.assigned_on = new Date(this.assignment_dict[assign]["assigned_on"]).toLocaleDateString('en-US', dateOptions);
                         }
                     }).catch(function(exception) {
                         console.log(exception);
@@ -110,12 +118,8 @@ export class StudentUploadPage {
         });
     }
 
-    doAlert(assignmentSelected) {
-        let alert = Alert.create({
-            title: 'Description',
-            subTitle: this.assignment_dict[assignmentSelected]["description"],
-            buttons: ['OK']
-        });
-        this.nav.present(alert);
+    openModal(assignmentSelected) {
+        let modal = Modal.create(AssignDescriptionModalPage, { description:this.assign_description,assignment:assignmentSelected,max_response_time:this.max_response_time,assigned_on:this.assigned_on});
+        this.nav.present(modal);
     }
 }

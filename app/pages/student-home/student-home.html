@@ -27,14 +27,10 @@
 
    <div [ngSwitch]="root">
         <ion-item *ngSwitchCase="'courses'">
-             <ion-list>
-                 <button ion-item *ngFor="let item of items" (click)="openChapterDetailsPage(item)">
-                   <ion-avatar item-left>
-                     <img id="avatar" src={{icons_names_map[item]}}>
-                   </ion-avatar>
-                    {{ item }}
-                 </button>
-             </ion-list>
+          <ion-card *ngFor="let item of items" (click)="openChapterDetailsPage(item)">
+                <img src="images/{{item}}.jpg">
+                <h2 style="text-align:center;font-weight:bold;" class="card-title">{{item}}</h2>
+          </ion-card>
         </ion-item>
 
       <ion-list *ngSwitchCase="'feed'">

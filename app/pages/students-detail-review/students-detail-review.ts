@@ -38,8 +38,6 @@ export class StudentDetailReviewPage {
                     this.assignment_dict[this.assignment] ["peer_review_map"] = assignmentDetail_info["peer_review_map"];
                     this.assignment_dict[this.assignment] ["responses"] = assignmentDetail_info["responses"];
                     this.students_to_review = this.assignment_dict[this.assignment]["peer_review_map"][this.reviewer]["to_review"];
-                    console.log(this.students_to_review[this.student]);
-                    console.log(this.assignment_dict[this.assignment] ["responses"]);
                     this.assignment_url = this.assignment_dict[this.assignment] ["responses"][this.students_to_review[this.student]]["attachmentUrl"];
                     this.url = this.sanitizer.bypassSecurityTrustResourceUrl(this.assignment_url);//WARNING: calling this method with untrusted user data exposes your application to XSS security risks!
                     console.log(this.url);
@@ -48,19 +46,14 @@ export class StudentDetailReviewPage {
                     {
                        this.reviewed = true;
                        this.ans_map = this.assignment_dict[this.assignment]["responses"][this.students_to_review[this.student]]["peers_feedback"][this.reviewer];
-                       console.log(this.ans_map);
                        this.ans1 = this.ans_map[this.questions[0]];
-                       console.log(this.ans1);
                        this.ans2 = this.ans_map[this.questions[1]];
-                       console.log(this.ans2);
                        this.ans3 = this.ans_map[this.questions[2]];
-                       console.log(this.ans2);
                     }
                     else
                     {
                       this.reviewed = false;
                     }
-                    console.log(this.questions);
                 }
             }).catch(function(exception){
               console.log(exception);
@@ -74,7 +67,6 @@ export class StudentDetailReviewPage {
                 if(response["ok"] == true){
                   let toastmsg = obj.lib.showToastMsgWithCloseButton("Succesfully Submitted Review");
                   obj.nav.present(toastmsg);
-                  dismiss();
                 }else{
                   let toastmsg = obj.lib.showToastMsgWithCloseButton("Unable to submit review, Try Again");
                   obj.nav.present(toastmsg);
