@@ -1,0 +1,22 @@
+<ion-navbar *navbar>
+  <ion-title>{{title}}</ion-title>
+</ion-navbar>
+
+<ion-tabs>
+  <ion-tab [root]="tab1Root" tabTitle="Instructions" [rootParams]="{'title':title}"></ion-tab>
+  <ion-tab [root]="tab2Root" tabTitle="To-Review" [rootParams]="{'title':title}"></ion-tab>
+  <ion-tab [root]="tab3Root" tabTitle="Reviewed" [rootParams]="{'title':title}"></ion-tab>
+</ion-tabs>
+<!--
+<ion-content padding class="assignment-page">
+    <p>Description : {{description}}</p>
+    <p>Response Duration : {{max_response_duration_min}} min</p>
+    <p>Assigned on      : {{assigned_on}}</p>
+    <p>Soft deadline    : {{soft_deadline_due}}</p>
+    <p>Hard deadline    : {{hard_deadline_due}}</p>
+    <student-assignment *ngFor="let student of teacher_yet_to_review"
+                        [student_id]="student"
+                        [response]="responses[student]">
+    </student-assignment>
+</ion-content>
+-->

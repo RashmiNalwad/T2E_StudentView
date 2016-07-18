@@ -1,0 +1,16 @@
+<ion-navbar *navbar>
+  <ion-title>{{classGrp}}</ion-title>
+</ion-navbar>
+  <ion-content padding class="class-home">
+    <div padding style="text-align: center;">
+  <button center round (click)="addNewChapter()">
+    <ion-icon name="add-circle"></ion-icon>
+    Add New Chapter
+  </button>
+
+  <p>List of Chapters</p>
+  <button text-justify outline block *ngFor="let chapter of chapters" (click)="openChapter(chapter)">
+    {{chapter}}<!--<ion-badge item-right>{{if(chapter_assignments[chapterTitle]["no_of_assignments"])}}</ion-badge>-->
+  </button>
+</div>
+</ion-content>

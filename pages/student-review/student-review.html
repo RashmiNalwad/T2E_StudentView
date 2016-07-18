@@ -1,0 +1,43 @@
+<ion-card>
+   <ion-card-header>{{assignment}}</ion-card-header>
+   <ion-card-content>
+     <a ion-item (click)="openModal(0)">
+       <ion-avatar item-left>
+         <img src="images/anonymous.png">
+       </ion-avatar>
+       <button primary small>
+         <div>Student 1</div>
+       </button>
+       <ion-icon *ngIf="!s1_status" name="create"></ion-icon>
+       <ion-icon *ngIf="s1_status" name="done-all" [ngStyle]="{'color': '#00cc66'}"></ion-icon>
+     </a>
+     <a ion-item (click)="openModal(1)">
+       <ion-avatar item-left>
+         <img src="images/anonymous.png">
+       </ion-avatar>
+       <button small>
+         <div>Student 2</div>
+       </button>
+       <ion-icon *ngIf="!s2_status" name="create"></ion-icon>
+       <ion-icon *ngIf="s2_status" name="done-all" [ngStyle]="{'color': '#00cc66'}"></ion-icon>
+     </a>
+     <a ion-item (click)="openModal(2)">
+       <ion-avatar item-left>
+         <img src="images/anonymous.png">
+       </ion-avatar>
+       <button primary small>
+         <div>Student 3</div>
+       </button>
+       <ion-icon *ngIf="!s3_status" name="create"></ion-icon>
+       <ion-icon *ngIf="s3_status" name="done-all" [ngStyle]="{'color': '#00cc66'}"></ion-icon>
+     </a>
+   </ion-card-content>
+   <ion-row>
+      <ion-col>
+        <button danger clear small>
+          <ion-icon name="calendar"></ion-icon>
+          <div>Review by: {{review_by}}</div>
+        </button>
+      </ion-col>
+  </ion-row>
+</ion-card>

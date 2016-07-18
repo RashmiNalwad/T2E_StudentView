@@ -1,0 +1,50 @@
+<ion-navbar *navbar>
+  <ion-title> Welcome Student </ion-title>
+</ion-navbar>
+
+<ion-content padding class="student-home">
+  <ion-card>
+    <ion-item>
+    <ion-row>
+        <ion-col>
+          <ion-avatar item-left>
+            <img id="avatar" src="images/anonymous.png">
+          </ion-avatar>
+        </ion-col>
+        <ion-col style="text-align:center;padding-top:25px;padding-right:20px;">
+              <h2> {{email}} </h2>
+        </ion-col>
+        <ion-col>
+          <ion-icon style="padding-top:10px;" item-right name="settings"></ion-icon>
+        </ion-col>
+    </ion-row>
+    </ion-item>
+  </ion-card>
+
+   <div padding>
+      <ion-segment [(ngModel)]="root">
+        <ion-segment-button value="courses">
+          Courses
+        </ion-segment-button>
+        <ion-segment-button value="feed">
+          Feed
+        </ion-segment-button>
+      </ion-segment>
+    </div>
+
+   <div [ngSwitch]="root">
+        <ion-item *ngSwitchCase="'courses'">
+          <ion-card *ngFor="let item of items" (click)="openChapterDetailsPage(item)">
+                <img src="images/{{item}}.jpg">
+                <h2 style="text-align:center;font-weight:bold;" class="card-title">{{item}}</h2>
+          </ion-card>
+        </ion-item>
+
+      <ion-list *ngSwitchCase="'feed'">
+        <ion-item>
+          <h2>Machine Learning</h2>
+          <h2>Summary</h2>
+        </ion-item>
+      </ion-list>
+   </div>
+</ion-content>

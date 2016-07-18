@@ -1,0 +1,24 @@
+<!--
+  Generated template for the ClassHomePage page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-navbar *navbar>
+   <button menuToggle>
+    <ion-icon name="menu"></ion-icon>
+  </button>
+  <ion-title>{{className}}</ion-title>
+
+  <button (click)="goHome()" side="right">
+    <ion-icon name="home"></ion-icon>
+  </button>
+</ion-navbar>
+
+<ion-content padding class="class-home">
+  <button center round (click)="addNewChapter()">
+    <ion-icon name="add-circle"></ion-icon>
+    Add New Chapter
+  </button>
+  <p>Can display class statistics here...</p>
+</ion-content>

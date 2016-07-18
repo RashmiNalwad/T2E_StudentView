@@ -1,0 +1,15 @@
+<ion-navbar *navbar>
+    <ion-title>
+        Home Page
+    </ion-title>
+</ion-navbar>
+
+<ion-content class="home">
+
+    <ion-label primary stacked>Username</ion-label>
+    <ion-input type="email" [(ngModel)]="name"></ion-input>
+<div padding style="text-align: center;">
+    <button (click)="goTo_TeacherHome(name)">Teacher</button>
+    <button (click)="goTo_StudentHome(name)">Student</button>
+</div>
+</ion-content>
