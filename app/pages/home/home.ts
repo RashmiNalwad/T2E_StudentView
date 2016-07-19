@@ -17,10 +17,4 @@ export class HomePage {
     goTo_StudentHome(name){
         this._navController.setRoot(StudentHomePage, { uname: name });
     }
-
-    /*
-     pushPage(){
-     this._navController.push(SomeImportedPage, { userId: "12345"});
-     }
-     */
 }

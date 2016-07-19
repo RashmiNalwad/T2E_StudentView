@@ -1,7 +1,9 @@
-import {Page, Alert, NavController, NavParams, Toast} from 'ionic-angular';
+import {Page, Alert, NavController, NavParams, Toast,App, Popover, Content} from 'ionic-angular';
+import {Component, ViewChild, ElementRef} from '@angular/core';
 import {Data} from '../../providers/data/data';
 import {Lib} from '../../providers/lib/lib';
 import {StudentCurrentPage} from "../student-current/student-current";
+import {SettingsPopoverPage} from "../settings-popover/settings-popover";
 
 @Page({
     templateUrl: 'build/pages/student-current/student-current.html',
@@ -29,6 +31,11 @@ export class StudentHomePage {
   icons_names_map:{};//map of subject names and icons letter
   res:string;
   link:string;
+
+  @ViewChild('popoverContent', {read: ElementRef}) content: ElementRef;
+  @ViewChild('popoverText', {read: ElementRef}) text: ElementRef;
+
+
   constructor(public nav: NavController, navParams: NavParams, private dataService: Data, private lib: Lib) {
     this.email = navParams.get('uname');
     this.root = "courses";
@@ -63,5 +70,15 @@ export class StudentHomePage {
 
   openChapterDetailsPage(className){
       this.nav.push(StudentCurrentPage, { className: className, studentGrade: this.student_grade, email:this.email });
+  }
+
+  presentPopover(ev) {
+    let popover = Popover.create(SettingsPopoverPage, {
+
+    });
+
+    this.nav.present(popover, {
+      ev: ev
+    });
   }
 }

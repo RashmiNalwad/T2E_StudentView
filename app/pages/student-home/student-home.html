@@ -3,16 +3,23 @@
 </ion-navbar>
 
 <ion-content padding class="student-home">
-   <div id="top_bar" class="list">
-    <a class="item item-thumbnail-left" href="#">
-      <img src="https://s3.amazonaws.com/sio-cdn/images/footer/icon/icon-twitter-30x30.png">
-      <div id="mydetails">
-        <h2> {{email}} </h2>
-        <p> {{class}}</p>
-      </div>
-      <ion-icon name="settings"></ion-icon>
-    </a>
-   </div>
+  <ion-card>
+    <ion-item>
+    <ion-row>
+        <ion-col>
+          <ion-avatar item-left>
+            <img id="avatar" src="images/anonymous.png">
+          </ion-avatar>
+        </ion-col>
+        <ion-col style="text-align:center;padding-top:25px;padding-right:20px;">
+              <h2> {{email}} </h2>
+        </ion-col>
+        <ion-col>
+          <ion-icon style="padding-top:10px;" item-right name="settings" (click)="presentPopover($event)"></ion-icon>
+        </ion-col>
+    </ion-row>
+    </ion-item>
+  </ion-card>
 
    <div padding>
       <ion-segment [(ngModel)]="root">
